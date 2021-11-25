@@ -54,8 +54,40 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name = "id"))
     private List<User> participants;
 
-    // ------------------------ >
+    @NotNull
+    @NotBlank
+    @Min(value = 1)
+    @Column(name="nb_patients")
+    private int nbPatients = 1;
 
+    @NotNull
+    @NotBlank
+    @Min(value = 1)
+    @Max(value = 16)
+    @Column(name="nb_total_patients")
+    private int nbTotalPatients = 16;
+
+    @NotNull
+    @OneToMany
+    @JoinTable(name = "comments",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id"))
+    private List<User> comments;
+
+    @Column(name="keywords")
+    private String[] keywords;
+
+    @OneToMany
+    @JoinTable(name = "researchs",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id"))
+    private List<User> researchs;
+
+    @OneToMany
+    @JoinTable(name = "followers",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id"))
+    private List<User> followers;
 
     public UUID getId() {
         return id;
@@ -73,12 +105,36 @@ public class Project {
         this.name = name;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getClosedAt() {
+        return closedAt;
+    }
+
+    public void setClosedAt(Date closedAt) {
+        this.closedAt = closedAt;
     }
 
     public List<User> getParticipants() {
@@ -89,4 +145,51 @@ public class Project {
         this.participants = participants;
     }
 
+    public int getNbPatients() {
+        return nbPatients;
+    }
+
+    public void setNbPatients(int nbPatients) {
+        this.nbPatients = nbPatients;
+    }
+
+    public int getNbTotalPatients() {
+        return nbTotalPatients;
+    }
+
+    public void setNbTotalPatients(int nbTotalPatients) {
+        this.nbTotalPatients = nbTotalPatients;
+    }
+
+    public List<User> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<User> comments) {
+        this.comments = comments;
+    }
+
+    public String[] getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String[] keywords) {
+        this.keywords = keywords;
+    }
+
+    public List<User> getResearchs() {
+        return researchs;
+    }
+
+    public void setResearchs(List<User> researchs) {
+        this.researchs = researchs;
+    }
+
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
+    }
 }
