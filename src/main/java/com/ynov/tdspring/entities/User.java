@@ -14,10 +14,10 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @NotNull
-    @NotBlank
-    @Column(name = "username", unique = true)
-    private String username;
+    @Column(name="id")
+    @Type(type = "uuid-char")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     @NotNull
     @NotBlank
@@ -49,12 +49,12 @@ public class User {
 
     // ------------------------ >
 
-    public String getUsername() {
-        return username;
+    public UUID getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getFirstname() {
