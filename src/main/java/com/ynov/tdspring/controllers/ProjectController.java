@@ -3,27 +3,21 @@ package com.ynov.tdspring.controllers;
 import com.ynov.tdspring.entities.Project;
 import com.ynov.tdspring.entities.User;
 import com.ynov.tdspring.services.ProjectService;
+import com.ynov.tdspring.services.SecurityService;
+import com.ynov.tdspring.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.validation.Valid;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,16 +27,25 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SecurityService securityService;
+
     // --------------------- >
 
     @RequestMapping(path = "/add-test-project", method = RequestMethod.GET)
     public void addTestProject() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User loggedUser = userService.getUserByUsername(authentication.getName());
+
         Project project = new Project();
-        project.setName("");
-        project.setAuthor(null);
+        project.setName("First project");
+        project.setAuthor(loggedUser);
         project.setDescription("");
         project.setParticipants(null);
-        projectService.createOrUpdate(project);
+        projectService.create(project);
     }
 
     @Operation(summary = "Récupération d'un projet")
@@ -51,11 +54,27 @@ public class ProjectController {
         return projectService.getProjectByProjectId(id);
     }
 
-    @Valid
-    @Operation(summary = "Création ou mise à jour d'un projet")
+    @Operation(summary = "Création d'un projet")
+    @RequestMapping(path = "/project", method = RequestMethod.POST)
+    public Project addProject(@Valid @RequestBody Project project) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByUsername(authentication.getName());
+
+        project.setAuthor(user);
+        return projectService.create(project);
+    }
+
+    @Operation(summary = "Mise à jour d'un projet")
     @RequestMapping(path = "/project", method = RequestMethod.PUT)
-    public Project addOrUpdateProject(@RequestBody Project project) {
-        return projectService.createOrUpdate(project);
+    public Object updateProject(@Valid @RequestBody Project project) throws Exception {
+        Authentication loggedUser = this.securityService.getLoggedUser();
+        User user = userService.getUserByUsername(loggedUser.getName());
+
+        if (user != project.getAuthor()){
+            throw new Exception("Vous n'êtes pas l'auteur de ce projet");
+        }
+
+        return projectService.update(project);
     }
 
     @Operation(summary = "Listes des participants du projet")

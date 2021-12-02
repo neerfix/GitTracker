@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +31,6 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "participants")
-    private List<Exit> exits;
-
     @NotNull
     @NotBlank
     @Column(name = "role")
@@ -50,7 +45,7 @@ public class User {
     // ------------------------ >
     @OneToMany(mappedBy = "researchs")
     private List<Research> researchs = new ArrayList<Research>();
-    
+
     public List<Research> getResearchs() {
 		return researchs;
 	}
@@ -89,14 +84,6 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public List<Exit> getExits() {
-        return exits;
-    }
-
-    public void setExits(List<Exit> exits) {
-        this.exits = exits;
     }
 
     public String getRole() {

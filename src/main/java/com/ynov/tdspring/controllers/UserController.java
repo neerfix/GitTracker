@@ -1,8 +1,8 @@
 package com.ynov.tdspring.controllers;
 
-import com.ynov.tdspring.entities.Exit;
 import com.ynov.tdspring.entities.Research;
 import com.ynov.tdspring.entities.User;
+import com.ynov.tdspring.services.SecurityService;
 import com.ynov.tdspring.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -21,6 +21,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SecurityService securityService;
 
     // --------------------- >
 
@@ -58,13 +61,13 @@ public class UserController {
     public void deleteUser(@RequestParam(value = "username") String username) {
         userService.delete(username);
     }
-    
+
     @Operation(summary = "Recherches de l'auteur ")
     @RequestMapping(path = "/user/researchs", method = RequestMethod.GET)
     public List<Research> getResearchByAuthor(@RequestParam(value = "id") String id) {
         return userService.getResearchsByUserId(id);
     }
-    
+
     @Valid
     @Operation(summary = "Ajouter une recherche à l'utilisateur")
     @RequestMapping(path = "/user/researchs", method = RequestMethod.PUT)

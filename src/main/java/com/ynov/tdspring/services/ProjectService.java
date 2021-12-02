@@ -6,6 +6,7 @@ import com.ynov.tdspring.repositories.ProjectRepository;
 import com.ynov.tdspring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,9 +22,17 @@ public class ProjectService
     @Autowired
     private UserRepository userRepository;
 
+
+    @Autowired
+    private SecurityService securityService;
+
     // --------------------- >
 
-    public Project createOrUpdate(Project project) {
+    public Project create(Project project) {
+        return projectRepository.save(project);
+    }
+
+    public Project update(Project project) throws Exception {
         return projectRepository.save(project);
     }
 
