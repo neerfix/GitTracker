@@ -31,11 +31,34 @@ public class Research {
     @NotBlank
     @Column(name="status")
     private String status;
+    
+    @NotNull
+    @NotBlank
+    @Column(name="search_text")
+    private String search_text;
 
     // ------------------------------- >
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private User author;
 
+    public User getAuthor() {
+		return author;
+	}
 
-    public UUID getId() {
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+
+	public String getSearch_text() {
+		return search_text;
+	}
+
+	public void setSearch_text(String search_text) {
+		this.search_text = search_text;
+	}
+
+	public UUID getId() {
         return id;
     }
 

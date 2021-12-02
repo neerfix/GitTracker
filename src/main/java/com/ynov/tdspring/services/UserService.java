@@ -1,6 +1,9 @@
 package com.ynov.tdspring.services;
 
+import com.ynov.tdspring.entities.Exit;
+import com.ynov.tdspring.entities.Research;
 import com.ynov.tdspring.entities.User;
+import com.ynov.tdspring.repositories.ResearchRepository;
 import com.ynov.tdspring.repositories.UserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +19,17 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import javax.validation.Valid;
 
 @Service
 public class UserService implements UserDetailsService
 {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ResearchRepository researchRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -85,4 +93,26 @@ public class UserService implements UserDetailsService
             }
         }
     }
+
+	public List<Research> getResearchsByUserId(String id) {
+		return userRepository.findById(id).orElse(null).getResearchs();
+	}
+
+	public @Valid User addResearchForUser(String id, UUID research) {
+		User user = this.getUserByUsername(id);
+
+        if (user != null) {
+            List<Research> listResearchs = user.getResearchs();
+            Research researchToAdd = researchRepository.findById(research).orElse(null);
+
+            if (researchToAdd != null) {
+            	listResearchs.add(researchToAdd);
+                user.setResearchs(listResearchs);
+            }
+
+            userRepository.save(user);
+        }
+
+        return user;
+	}
 }

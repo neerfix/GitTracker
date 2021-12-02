@@ -1,5 +1,7 @@
 package com.ynov.tdspring.controllers;
 
+import com.ynov.tdspring.entities.Exit;
+import com.ynov.tdspring.entities.Research;
 import com.ynov.tdspring.entities.User;
 import com.ynov.tdspring.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class UserController {
@@ -54,6 +57,19 @@ public class UserController {
     @RequestMapping(path = "/user", method = RequestMethod.DELETE)
     public void deleteUser(@RequestParam(value = "username") String username) {
         userService.delete(username);
+    }
+    
+    @Operation(summary = "Recherches de l'auteur ")
+    @RequestMapping(path = "/user/researchs", method = RequestMethod.GET)
+    public List<Research> getResearchByAuthor(@RequestParam(value = "id") String id) {
+        return userService.getResearchsByUserId(id);
+    }
+    
+    @Valid
+    @Operation(summary = "Ajouter une recherche à l'utilisateur")
+    @RequestMapping(path = "/user/researchs", method = RequestMethod.PUT)
+    public User addUserForExit(@RequestParam(value = "id") String id, @RequestParam(value = "research") UUID research) {
+        return userService.addResearchForUser(id, research);
     }
 
     @Operation(summary = "Mise à jour du mot de passe d'un utilisateur")

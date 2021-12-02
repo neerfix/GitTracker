@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,8 +48,18 @@ public class User {
     private String password;
 
     // ------------------------ >
+    @OneToMany(mappedBy = "researchs")
+    private List<Research> researchs = new ArrayList<Research>();
+    
+    public List<Research> getResearchs() {
+		return researchs;
+	}
 
-    public String getUsername() {
+	public void setResearchs(List<Research> orders) {
+		this.researchs = orders;
+	}
+
+	public String getUsername() {
         return username;
     }
 
