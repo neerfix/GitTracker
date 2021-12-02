@@ -1,23 +1,21 @@
 package com.ynov.tdspring.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
-    @Column(name="id")
-    @Type(type = "uuid-char")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @NotNull
+    @NotBlank
+    @Column(name = "username", unique = true)
+    private String username;
 
     @NotNull
     @NotBlank
@@ -49,12 +47,12 @@ public class User {
 
     // ------------------------ >
 
-    public UUID getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstname() {

@@ -31,12 +31,12 @@ public class ProjectService
         return projectRepository.findById(id).orElse(null);
     }
 
-    public Project addUserToProject(UUID id, UUID userId) {
+    public Project addUserToProject(UUID id, String username) {
     	Project project = this.getProjectByProjectId(id);
 
         if (project != null) {
             List<User> listUsers = project.getParticipants();
-            User userToAdd = userRepository.findById(userId).orElse(null);
+            User userToAdd = userRepository.findById(username).orElse(null);
 
             if (userToAdd != null) {
                 listUsers.add(userToAdd);
@@ -49,12 +49,12 @@ public class ProjectService
         return project;
     }
 
-    public Project deleteUserForProject(UUID id, UUID userId) {
+    public Project deleteUserForProject(UUID id, String username) {
     	Project project = this.getProjectByProjectId(id);
 
         if (project != null) {
             List<User> listUsers = project.getParticipants();
-            User userToAdd = userRepository.findById(userId).orElse(null);
+            User userToAdd = userRepository.findById(username).orElse(null);
 
             if (userToAdd != null) {
                 listUsers.remove(userToAdd);

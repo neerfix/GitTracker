@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService
@@ -37,14 +36,14 @@ public class UserService implements UserDetailsService
         return userRepository.save(user);
     }
 
-    public User getUserByUuid(UUID id) {
-        return userRepository.findById(id).orElse(null);
+    public User getUserByUsername(String username) {
+        return userRepository.findById(username).orElse(null);
     }
 
     public List<User> getAllUsers() { return userRepository.findAll(); }
 
-    public void delete(UUID id) {
-        User deleteUser = this.getUserByUuid(id);
+    public void delete(String username) {
+        User deleteUser = this.getUserByUsername(username);
 
         if (deleteUser == null) {
             throw new ResponseStatusException(
@@ -56,9 +55,9 @@ public class UserService implements UserDetailsService
     }
 
     @Override
-    public UserDetails loadUserByUsername(UUID id) throws
+    public UserDetails loadUserByUsername(String username) throws
             UsernameNotFoundException {
-        User user = this.getUserByUuid(id);
+        User user = this.getUserByUsername(username);
         if (user != null) {
             List<GrantedAuthority> authorities = new
                     ArrayList<GrantedAuthority>();
@@ -72,8 +71,8 @@ public class UserService implements UserDetailsService
         throw new UsernameNotFoundException("User '" + username + "' not found or inactive");
     }
 
-    public void setPassword(UUID id, String oldPassword, String newPassword) throws IllegalAccessException {
-        User user = this.getUserByUuid(id);
+    public void setPassword(String username, String oldPassword, String newPassword) throws IllegalAccessException {
+        User user = this.getUserByUsername(username);
         if (user != null) {
             String encodedOldPassword = passwordEncoder.encode(oldPassword);
             String encodedNewPassword = passwordEncoder.encode(newPassword);

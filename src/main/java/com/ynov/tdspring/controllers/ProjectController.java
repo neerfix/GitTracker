@@ -67,14 +67,14 @@ public class ProjectController {
     @Valid
     @Operation(summary = "Ajouter un utilisateur au projet")
     @RequestMapping(path = "/project/user", method = RequestMethod.PUT)
-    public Project addUserForProject(@RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") UUID userId) {
-        return projectService.addUserToProject(id, userId);
+    public Project addUserForProject(@RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) {
+        return projectService.addUserToProject(id, username);
     }
 
     @Operation(summary = "Supprimer un utilisateur du projet")
     @RequestMapping(path = "/project/user", method = RequestMethod.DELETE)
-    public Project deleteUserForProject(@RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") UUID userId) {
-        return projectService.deleteUserForProject(id, userId);
+    public Project deleteUserForProject(@RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) {
+        return projectService.deleteUserForProject(id, username);
     }
 
     @Operation(summary = "Récupération de touts les projets")
