@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class UserController {
@@ -34,8 +35,8 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user", method = RequestMethod.GET)
-    public User getUser(@RequestParam(value = "id") String username) {
-        return userService.getUserByUsername(username);
+    public User getUser(@RequestParam(value = "id") UUID id) {
+        return userService.getUserByUuid(id);
     }
 
     @Operation(summary = "Création ou mise à jour d'un utilisateur")
@@ -58,9 +59,9 @@ public class UserController {
 
     @Operation(summary = "Mise à jour du mot de passe d'un utilisateur")
     @RequestMapping(path = "/user/updatePassword", method = RequestMethod.GET)
-    public void setPassword(@RequestParam(value = "username") String userName,
+    public void setPassword(@RequestParam(value = "username") UUID id,
                             @RequestParam(value = "old") String oldPassword,
                             @RequestParam(value = "new") String newPassword) throws IllegalAccessException {
-        userService.setPassword(userName, oldPassword, newPassword);
+        userService.setPassword(id, oldPassword, newPassword);
     }
 }
