@@ -25,7 +25,7 @@ public class Project {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name="id", nullable=false)
+    @JoinColumn(name="author", nullable=false)
     private User author;
 
     @NotNull
@@ -51,7 +51,7 @@ public class Project {
     @Max(value = 16)
     @JoinTable(name = "users_projects",
             joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
+            inverseJoinColumns = @JoinColumn(name = "project"))
     private List<User> participants;
 
     @NotNull
@@ -71,7 +71,7 @@ public class Project {
     @OneToMany
     @JoinTable(name = "comments",
             joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
+            inverseJoinColumns = @JoinColumn(name = "comments"))
     private List<User> comments;
 
     @Column(name="keywords")
@@ -80,13 +80,13 @@ public class Project {
     @OneToMany
     @JoinTable(name = "researchs",
             joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
+            inverseJoinColumns = @JoinColumn(name = "researchs"))
     private List<User> researchs;
 
     @OneToMany
     @JoinTable(name = "followers",
             joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
+            inverseJoinColumns = @JoinColumn(name = "followers"))
     private List<User> followers;
 
     public UUID getId() {
