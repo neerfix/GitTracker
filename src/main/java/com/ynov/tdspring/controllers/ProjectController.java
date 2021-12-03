@@ -84,20 +84,53 @@ public class ProjectController {
 
     @Operation(summary = "Ajouter un utilisateur au projet")
     @RequestMapping(path = "/project/user", method = RequestMethod.PUT)
-    public Project addUserForProject(@Valid @RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) {
-        return projectService.addUserToProject(id, username);
+    public Project addUserForProject(@Valid @RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) throws Exception {
+        User user = this.userService.getUserByUsername(username);
+        Project project = this.projectService.getProjectByProjectId(id);
+
+        if (user == null) {
+            throw new Exception("user not found");
+        }
+
+        if (project == null) {
+            throw new Exception("project not found");
+        }
+
+        return projectService.addUserToProject(project, user);
     }
 
     @Operation(summary = "Supprimer un utilisateur du projet")
     @RequestMapping(path = "/project/user", method = RequestMethod.DELETE)
-    public Project deleteUserForProject(@RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) {
-        return projectService.deleteUserForProject(id, username);
+    public Project deleteUserForProject(@RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) throws Exception {
+        User user = this.userService.getUserByUsername(username);
+        Project project = this.projectService.getProjectByProjectId(id);
+
+        if (user == null) {
+            throw new Exception("user not found");
+        }
+
+        if (project == null) {
+            throw new Exception("project not found");
+        }
+
+        return projectService.refuseUserInProject(project, user);
     }
 
     @Operation(summary = "Supprimer un utilisateur du projet")
         @RequestMapping(path = "/project/user/accept", method = RequestMethod.DELETE)
         public Project acceptUserForProject(@RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) throws Exception {
-            return projectService.accept(id, username);
+            User user = this.userService.getUserByUsername(username);
+            Project project = this.projectService.getProjectByProjectId(id);
+
+            if (user == null) {
+                throw new Exception("user not found");
+            }
+
+            if (project == null) {
+                throw new Exception("project not found");
+            }
+
+            return projectService.acceptUserInProject(project, user);
         }
 
     @Operation(summary = "Récupération de touts les projets")

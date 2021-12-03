@@ -1,6 +1,5 @@
 package com.ynov.tdspring.controllers;
 
-import com.ynov.tdspring.entities.Exit;
 import com.ynov.tdspring.entities.Research;
 import com.ynov.tdspring.entities.User;
 import com.ynov.tdspring.services.ResearchService;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,8 +56,6 @@ public class ResearchController {
         return researchService.getResearchByResearchId(id).getAuthor();
     }
 
-    
-    
     @Operation(summary = "Récupération de toutes les recherches")
     @RequestMapping(path = "/researchs", method = RequestMethod.GET)
     public List<Research> getResearch() {

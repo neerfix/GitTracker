@@ -3,9 +3,11 @@ package com.ynov.tdspring.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -41,6 +43,18 @@ public class User {
     @JsonIgnore
     @Column(name = "password")
     private String password;
+
+    @NotNull
+    @NotBlank
+    @FutureOrPresent
+    @Column(name="created_at")
+    private Date createdAt;
+
+    @NotNull
+    @NotBlank
+    @FutureOrPresent
+    @Column(name="updated_at")
+    private Date updateAt;
 
     // ------------------------ >
     @OneToMany(mappedBy = "researchs")
@@ -100,5 +114,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
     }
 }

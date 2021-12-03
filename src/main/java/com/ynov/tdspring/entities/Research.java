@@ -31,7 +31,19 @@ public class Research {
     @NotBlank
     @Column(name="status")
     private String status;
-    
+
+    @NotNull
+    @NotBlank
+    @FutureOrPresent
+    @Column(name="created_at")
+    private Date createdAt;
+
+    @NotNull
+    @NotBlank
+    @FutureOrPresent
+    @Column(name="updated_at")
+    private Date updateAt;
+
     @NotNull
     @NotBlank
     @Column(name="search_text")
@@ -80,5 +92,21 @@ public class Research {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
     }
 }

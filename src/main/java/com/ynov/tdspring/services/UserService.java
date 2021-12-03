@@ -1,6 +1,5 @@
 package com.ynov.tdspring.services;
 
-import com.ynov.tdspring.entities.Exit;
 import com.ynov.tdspring.entities.Research;
 import com.ynov.tdspring.entities.User;
 import com.ynov.tdspring.repositories.ResearchRepository;

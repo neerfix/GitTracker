@@ -2,6 +2,7 @@ package com.ynov.tdspring.services;
 
 import com.ynov.tdspring.entities.Project;
 import com.ynov.tdspring.entities.User;
+import com.ynov.tdspring.entities.UserRequest;
 import com.ynov.tdspring.repositories.ProjectRepository;
 import com.ynov.tdspring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,9 +22,11 @@ public class ProjectService
     @Autowired
     private UserRepository userRepository;
 
-
     @Autowired
     private SecurityService securityService;
+
+    @Autowired
+    private UserRequestService userRequestService;
 
     // --------------------- >
 
@@ -40,15 +42,12 @@ public class ProjectService
         return projectRepository.findById(id).orElse(null);
     }
 
-    public Project addUserToProject(UUID id, String username) {
-    	Project project = this.getProjectByProjectId(id);
-
+    public Project addUserToProject(Project project, User user) {
         if (project != null) {
             List<User> listUsers = project.getParticipants();
-            User userToAdd = userRepository.findById(username).orElse(null);
 
-            if (userToAdd != null) {
-                listUsers.add(userToAdd);
+            if (user != null) {
+                listUsers.add(user);
                 project.setParticipants(listUsers);
             }
 
@@ -58,15 +57,12 @@ public class ProjectService
         return project;
     }
 
-    public Project deleteUserForProject(UUID id, String username) {
-    	Project project = this.getProjectByProjectId(id);
-
+    public Project deleteUserForProject(Project project, User user) {
         if (project != null) {
             List<User> listUsers = project.getParticipants();
-            User userToAdd = userRepository.findById(username).orElse(null);
 
-            if (userToAdd != null) {
-                listUsers.remove(userToAdd);
+            if (user != null) {
+                listUsers.remove(user);
                 project.setParticipants(listUsers);
             }
 
@@ -90,25 +86,13 @@ public class ProjectService
         projectRepository.delete(deleteExit);
     }
 
-    public Project accept(UUID id, String username) throws Exception {
-        Project project = this.getProjectByProjectId(id);
+    public Project acceptUserInProject(Project projectId, User user) {
+        UserRequest userRequest = this.userRequestService.getUserRequestByUserAndProject(user, projectId);
+        return this.userRequestService.acceptApplication(userRequest);
+    }
 
-        if (project == null) {
-            throw new Exception("Project not found");
-        }
-
-        Optional<User> user = userRepository.findById(username);
-
-        if (user == null) {
-            throw new Exception("User not found");
-        }
-
-        for (User participant : project.getParticipants()) {
-            if (participant == user) {
-                return null;
-            }
-        }
-
-            projectRepository.delete(deleteExit);
-        }
+    public Project refuseUserInProject(Project projectId, User user) {
+        UserRequest userRequest = this.userRequestService.getUserRequestByUserAndProject(user, projectId);
+        return this.userRequestService.refuseApplication(userRequest);
+    }
 }

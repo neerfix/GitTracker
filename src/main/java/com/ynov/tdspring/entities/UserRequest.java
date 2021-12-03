@@ -3,12 +3,19 @@ package com.ynov.tdspring.entities;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users_requests")
 public class UserRequest {
+
+    public String STATUS_PENDING = "PENDING";
+    public String STATUS_ACCEPTED = "ACCEPTED";
+    public String STATUS_REFUSED = "REFUSED";
 
     @Id
     @Column(name="id")
@@ -32,6 +39,18 @@ public class UserRequest {
     @ManyToOne
     @JoinColumn(name="projects", nullable=false)
     private Project project;
+
+    @NotNull
+    @NotBlank
+    @FutureOrPresent
+    @Column(name="created_at")
+    private Date createdAt;
+
+    @NotNull
+    @NotBlank
+    @FutureOrPresent
+    @Column(name="updated_at")
+    private Date updateAt;
 
     // ------------------------ >
 
@@ -65,5 +84,21 @@ public class UserRequest {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
     }
 }

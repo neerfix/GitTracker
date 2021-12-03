@@ -42,6 +42,12 @@ public class Project {
     @NotNull
     @NotBlank
     @FutureOrPresent
+    @Column(name="updated_at")
+    private Date updateAt;
+
+    @NotNull
+    @NotBlank
+    @FutureOrPresent
     @Column(name="closed_at")
     private Date closedAt;
 
@@ -127,6 +133,14 @@ public class Project {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
     }
 
     public Date getClosedAt() {
