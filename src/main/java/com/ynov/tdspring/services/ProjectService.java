@@ -1,10 +1,10 @@
 package com.ynov.tdspring.services;
 
+import com.ynov.tdspring.entities.Event;
 import com.ynov.tdspring.entities.Project;
 import com.ynov.tdspring.entities.User;
 import com.ynov.tdspring.entities.UserRequest;
 import com.ynov.tdspring.repositories.ProjectRepository;
-import com.ynov.tdspring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,21 +20,24 @@ public class ProjectService
     private ProjectRepository projectRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private SecurityService securityService;
-
-    @Autowired
     private UserRequestService userRequestService;
+
+    @Autowired
+    private EventService eventService;
 
     // --------------------- >
 
     public Project create(Project project) {
+        Event event = new Event();
+        this.eventService.create(event.EVENT_PROJECT,project.getAuthor(), event.EVENT_ACTION_CREATE, project);
+
         return projectRepository.save(project);
     }
 
-    public Project update(Project project) throws Exception {
+    public Project update(Project project) {
+        Event event = new Event();
+        this.eventService.create(event.EVENT_PROJECT,project.getAuthor(), event.EVENT_ACTION_UPDATE, project);
+
         return projectRepository.save(project);
     }
 
@@ -69,6 +72,9 @@ public class ProjectService
             projectRepository.save(project);
         }
 
+        Event event = new Event();
+        this.eventService.create(event.EVENT_USER, user, event.EVENT_ACTION_DELETE, project);
+
         return project;
     }
 
@@ -86,13 +92,44 @@ public class ProjectService
         projectRepository.delete(deleteExit);
     }
 
-    public Project acceptUserInProject(Project projectId, User user) {
-        UserRequest userRequest = this.userRequestService.getUserRequestByUserAndProject(user, projectId);
+    public Project acceptUserInProject(Project project, User user) throws Exception {
+        UserRequest userRequest = this.userRequestService.getUserRequestByUserAndProject(user, project);
+
+        if (userRequest == null) {
+            throw new Exception("userRequest");
+        }
+
+        Event event = new Event();
+        this.eventService.updateUser(event.EVENT_USER, user, event.EVENT_ACTION_CREATE, project, user.getUsername());
+
         return this.userRequestService.acceptApplication(userRequest);
     }
 
-    public Project refuseUserInProject(Project projectId, User user) {
-        UserRequest userRequest = this.userRequestService.getUserRequestByUserAndProject(user, projectId);
+    public Project refuseUserInProject(Project project, User user) throws Exception {
+        UserRequest userRequest = this.userRequestService.getUserRequestByUserAndProject(user, project);
+
+        if (userRequest == null) {
+            throw new Exception("userRequest");
+        }
+
+        Event event = new Event();
+        this.eventService.updateUser(event.EVENT_USER, user, event.EVENT_ACTION_REFUSE, project, user.getUsername());
+
         return this.userRequestService.refuseApplication(userRequest);
+    }
+
+    public Project userApplyToProject(Project project, User user) throws Exception {
+        UserRequest userRequest = this.userRequestService.getUserRequestByUserAndProject(user, project);
+
+        if (userRequest == null) {
+            throw new Exception("userRequest");
+        }
+
+        this.userRequestService.applicationToJoinProject(project, user);
+
+        Event event = new Event();
+        this.eventService.updateUser(event.EVENT_USER, user, event.EVENT_ACTION_REQUEST_JOIN, project, user.getUsername());
+
+        return project;
     }
 }

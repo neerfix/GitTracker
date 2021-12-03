@@ -17,9 +17,6 @@ public class UserRequestService
     private UserRequestRepository userRequestRepository;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private ProjectService projectService;
 
     // --------------------- >
@@ -40,15 +37,13 @@ public class UserRequestService
         return null;
     }
 
-    private UserRequest applicationToJoinProject(UUID projectId, String username) {
+    public void applicationToJoinProject(Project project, User user) {
         List<UserRequest> userRequests =  this.userRequestRepository.findAll();
-        User user = this.userService.getUserByUsername(username);
-        Project project = this.projectService.getProjectByProjectId(projectId);
 
         for (UserRequest userRequest : userRequests) {
             if (userRequest.getUser() == user) {
                 if (userRequest.getProject() == project) {
-                    return null;
+                    return;
                 }
             }
         }
@@ -58,7 +53,7 @@ public class UserRequestService
         userRequest.setUser(user);
         userRequest.setProject(project);
 
-        return this.userRequestRepository.save(userRequest);
+        this.userRequestRepository.save(userRequest);
     }
 
     public Project acceptApplication(UserRequest userRequest) {

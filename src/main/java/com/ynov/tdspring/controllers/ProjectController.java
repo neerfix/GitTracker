@@ -82,7 +82,7 @@ public class ProjectController {
         return projectService.getProjectByProjectId(id).getParticipants();
     }
 
-    @Operation(summary = "Ajouter un utilisateur au projet")
+    @Operation(summary = "Demander de rejondre un projet")
     @RequestMapping(path = "/project/user", method = RequestMethod.PUT)
     public Project addUserForProject(@Valid @RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) throws Exception {
         User user = this.userService.getUserByUsername(username);
@@ -96,7 +96,7 @@ public class ProjectController {
             throw new Exception("project not found");
         }
 
-        return projectService.addUserToProject(project, user);
+        return projectService.userApplyToProject(project, user);
     }
 
     @Operation(summary = "Supprimer un utilisateur du projet")
@@ -117,7 +117,7 @@ public class ProjectController {
     }
 
     @Operation(summary = "Supprimer un utilisateur du projet")
-        @RequestMapping(path = "/project/user/accept", method = RequestMethod.DELETE)
+        @RequestMapping(path = "/project/user/accept", method = RequestMethod.GET)
         public Project acceptUserForProject(@RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) throws Exception {
             User user = this.userService.getUserByUsername(username);
             Project project = this.projectService.getProjectByProjectId(id);

@@ -13,6 +13,20 @@ import java.util.UUID;
 @Table(name = "event")
 public class Event {
 
+    public String EVENT_USER = "USER";
+    public String EVENT_USER_REQUEST = "USER_REQUEST";
+    public String EVENT_PROJECT = "PROJECT";
+    public String EVENT_RESEARCH = "RESEARCH";
+    public String EVENT_COMMENT = "COMMENT";
+    public String EVENT_LIKE = "LIKE";
+
+    public String EVENT_ACTION_CREATE = "create";
+    public String EVENT_ACTION_UPDATE = "update";
+    public String EVENT_ACTION_DELETE = "delete";
+    public String EVENT_ACTION_ACCEPT = "accepted";
+    public String EVENT_ACTION_REQUEST_JOIN = "request to join";
+    public String EVENT_ACTION_REFUSE = "refused";
+
     @Id
     @Column(name="id")
     @Type(type = "uuid-char")
@@ -42,8 +56,17 @@ public class Event {
     @JoinColumn(name="author")
     private User author;
 
-    // ------------------------ >
+    @NotNull
+    @NotBlank
+    @JoinColumn(name="entity_id")
+    private Object entityId;
 
+    @NotNull
+    @NotBlank
+    @JoinColumn(name="entity")
+    private String entity;
+
+    // ------------------------ >
 
     public UUID getId() {
         return id;
@@ -83,5 +106,21 @@ public class Event {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public Object getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(Object entityId) {
+        this.entityId = entityId;
+    }
+
+    public String getEntity() {
+        return entity;
+    }
+
+    public void setEntity(String entity) {
+        this.entity = entity;
     }
 }

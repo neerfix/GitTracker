@@ -1,5 +1,6 @@
 package com.ynov.tdspring.services;
 
+import com.ynov.tdspring.entities.Event;
 import com.ynov.tdspring.entities.Research;
 import com.ynov.tdspring.entities.User;
 import com.ynov.tdspring.repositories.ResearchRepository;
@@ -27,11 +28,15 @@ public class UserService implements UserDetailsService
 {
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private ResearchRepository researchRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EventService eventService;
 
     // --------------------- >
 
@@ -39,6 +44,9 @@ public class UserService implements UserDetailsService
         if (StringUtils.isNotEmpty(user.getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
+
+        Event event = new Event();
+        this.eventService.create(event.EVENT_RESEARCH, user, event.EVENT_ACTION_CREATE, user);
 
         return userRepository.save(user);
     }
@@ -50,15 +58,18 @@ public class UserService implements UserDetailsService
     public List<User> getAllUsers() { return userRepository.findAll(); }
 
     public void delete(String username) {
-        User deleteUser = this.getUserByUsername(username);
+        User user = this.getUserByUsername(username);
 
-        if (deleteUser == null) {
+        if (user == null) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "User not found"
             );
         }
 
-        userRepository.delete(deleteUser);
+        Event event = new Event();
+        this.eventService.create(event.EVENT_RESEARCH, user, event.EVENT_ACTION_CREATE, user);
+
+        userRepository.delete(user);
     }
 
     @Override
@@ -86,6 +97,9 @@ public class UserService implements UserDetailsService
             if (StringUtils.isEmpty(user.getPassword()) ||
                     StringUtils.equals(user.getPassword(), encodedOldPassword)) {
                 user.setPassword(encodedNewPassword);
+                Event event = new Event();
+                this.eventService.create(event.EVENT_RESEARCH, user, event.EVENT_ACTION_UPDATE, user);
+
                 userRepository.save(user);
             } else {
                 throw new IllegalAccessException("Invalid old password");
