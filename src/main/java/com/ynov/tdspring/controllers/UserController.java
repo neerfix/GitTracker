@@ -1,6 +1,8 @@
 package com.ynov.tdspring.controllers;
 
+import com.ynov.tdspring.entities.Research;
 import com.ynov.tdspring.entities.User;
+import com.ynov.tdspring.services.SecurityService;
 import com.ynov.tdspring.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -12,12 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SecurityService securityService;
 
     // --------------------- >
 
@@ -56,11 +62,24 @@ public class UserController {
         userService.delete(username);
     }
 
+    @Operation(summary = "Recherches de l'auteur ")
+    @RequestMapping(path = "/user/researchs", method = RequestMethod.GET)
+    public List<Research> getResearchByAuthor(@RequestParam(value = "id") String id) {
+        return userService.getResearchsByUserId(id);
+    }
+
+    @Valid
+    @Operation(summary = "Ajouter une recherche à l'utilisateur")
+    @RequestMapping(path = "/user/researchs", method = RequestMethod.PUT)
+    public User addUserForExit(@RequestParam(value = "id") String id, @RequestParam(value = "research") UUID research) {
+        return userService.addResearchForUser(id, research);
+    }
+
     @Operation(summary = "Mise à jour du mot de passe d'un utilisateur")
     @RequestMapping(path = "/user/updatePassword", method = RequestMethod.GET)
-    public void setPassword(@RequestParam(value = "username") String userName,
+    public void setPassword(@RequestParam(value = "username") String username,
                             @RequestParam(value = "old") String oldPassword,
                             @RequestParam(value = "new") String newPassword) throws IllegalAccessException {
-        userService.setPassword(userName, oldPassword, newPassword);
+        userService.setPassword(username, oldPassword, newPassword);
     }
 }

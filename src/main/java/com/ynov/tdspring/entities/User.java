@@ -1,13 +1,14 @@
 package com.ynov.tdspring.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -32,10 +33,6 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "participants")
-    private List<Exit> exits;
-
     @NotNull
     @NotBlank
     @Column(name = "role")
@@ -47,9 +44,31 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    // ------------------------ >
+    @NotNull
+    @NotBlank
+    @FutureOrPresent
+    @Column(name="created_at")
+    private Date createdAt;
 
-    public String getUsername() {
+    @NotNull
+    @NotBlank
+    @FutureOrPresent
+    @Column(name="updated_at")
+    private Date updateAt;
+
+    // ------------------------ >
+    @OneToMany(mappedBy = "researchs")
+    private List<Research> researchs = new ArrayList<Research>();
+
+    public List<Research> getResearchs() {
+		return researchs;
+	}
+
+	public void setResearchs(List<Research> orders) {
+		this.researchs = orders;
+	}
+
+	public String getUsername() {
         return username;
     }
 
@@ -81,14 +100,6 @@ public class User {
         this.phone = phone;
     }
 
-    public List<Exit> getExits() {
-        return exits;
-    }
-
-    public void setExits(List<Exit> exits) {
-        this.exits = exits;
-    }
-
     public String getRole() {
         return role;
     }
@@ -103,5 +114,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
     }
 }
