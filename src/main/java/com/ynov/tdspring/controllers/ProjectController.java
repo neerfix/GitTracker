@@ -8,7 +8,6 @@ import com.ynov.tdspring.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,10 +82,9 @@ public class ProjectController {
         return projectService.getProjectByProjectId(id).getParticipants();
     }
 
-    @Valid
     @Operation(summary = "Ajouter un utilisateur au projet")
     @RequestMapping(path = "/project/user", method = RequestMethod.PUT)
-    public Project addUserForProject(@RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) {
+    public Project addUserForProject(@Valid @RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) {
         return projectService.addUserToProject(id, username);
     }
 
@@ -95,6 +93,12 @@ public class ProjectController {
     public Project deleteUserForProject(@RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) {
         return projectService.deleteUserForProject(id, username);
     }
+
+    @Operation(summary = "Supprimer un utilisateur du projet")
+        @RequestMapping(path = "/project/user/accept", method = RequestMethod.DELETE)
+        public Project acceptUserForProject(@RequestParam(value = "id") UUID id, @RequestParam(value = "user_id") String username) throws Exception {
+            return projectService.accept(id, username);
+        }
 
     @Operation(summary = "Récupération de touts les projets")
     @RequestMapping(path = "/projects", method = RequestMethod.GET)

@@ -6,11 +6,11 @@ import com.ynov.tdspring.repositories.ProjectRepository;
 import com.ynov.tdspring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -89,4 +89,26 @@ public class ProjectService
 
         projectRepository.delete(deleteExit);
     }
+
+    public Project accept(UUID id, String username) throws Exception {
+        Project project = this.getProjectByProjectId(id);
+
+        if (project == null) {
+            throw new Exception("Project not found");
+        }
+
+        Optional<User> user = userRepository.findById(username);
+
+        if (user == null) {
+            throw new Exception("User not found");
+        }
+
+        for (User participant : project.getParticipants()) {
+            if (participant == user) {
+                return null;
+            }
+        }
+
+            projectRepository.delete(deleteExit);
+        }
 }
