@@ -47,6 +47,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @NotNull
+    @ManyToMany(mappedBy="likes")
+    private List<Comment> likedComments;
+
     // ------------------------ >
 
     public String getUsername() {
@@ -104,4 +108,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    // getter & setter likedComments
 }
