@@ -87,7 +87,7 @@ public class Project {
     @JoinTable(name = "researchs",
             joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "researchs"))
-    private List<User> researchs;
+    private List<Research> researchs;
 
     @OneToMany
     @JoinTable(name = "followers",
@@ -191,11 +191,11 @@ public class Project {
         this.keywords = keywords;
     }
 
-    public List<User> getResearchs() {
+    public List<Research> getResearchs() {
         return researchs;
     }
 
-    public void setResearchs(List<User> researchs) {
+    public void setResearchs(List<Research> researchs) {
         this.researchs = researchs;
     }
 

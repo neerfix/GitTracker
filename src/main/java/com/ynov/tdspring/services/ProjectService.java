@@ -2,8 +2,10 @@ package com.ynov.tdspring.services;
 
 import com.ynov.tdspring.entities.Event;
 import com.ynov.tdspring.entities.Project;
+import com.ynov.tdspring.entities.Research;
 import com.ynov.tdspring.entities.User;
 import com.ynov.tdspring.entities.UserRequest;
+import com.ynov.tdspring.entities.UserResearchRequest;
 import com.ynov.tdspring.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,9 @@ public class ProjectService
 
     @Autowired
     private UserRequestService userRequestService;
+    
+    @Autowired
+    private UserResearchRequestService userResearchRequestService;
 
     @Autowired
     private EventService eventService;
@@ -131,5 +136,81 @@ public class ProjectService
         this.eventService.updateUser(event.EVENT_USER, user, event.EVENT_ACTION_REQUEST_JOIN, project, user.getUsername());
 
         return project;
+    }
+    
+    public Project userProposeRequestToProject(Project project, User user, Research research) throws Exception {
+        UserRequest userRequest = this.userRequestService.getUserRequestByUserAndProject(user, project);
+        
+        if (userRequest == null) {
+            throw new Exception("userRequest");
+        }
+        if (userRequest == null) {
+            throw new Exception("userRequest");
+        }
+
+        this.userRequestService.applicationToJoinProject(project, user);
+
+        Event event = new Event();
+        this.eventService.updateUser(event.EVENT_USER, user, event.EVENT_ACTION_RESEARCH_REQUEST_ADD, project, user.getUsername());
+
+        return project;
+    }
+
+	public Project addUserResearchToProject(Project project, Research research) {
+		if (project != null) {
+            List<Research> listResearch = project.getResearchs();
+
+            if (research != null) {
+            	listResearch.add(research);
+                project.setResearchs(listResearch);
+            }
+
+            projectRepository.save(project);
+        }
+
+        return project;
+	}
+
+	public Project deleteResearchForProject(Project project, User user, Research research) {
+		if (project != null) {
+			 List<Research> listResearch = project.getResearchs();
+
+            if (research != null) {
+            	listResearch.remove(research);
+                project.setResearchs(listResearch);
+            }
+
+            projectRepository.save(project);
+        }
+
+        Event event = new Event();
+        this.eventService.create(event.EVENT_USER, user, event.EVENT_ACTION_RESEARCH_DELETE, project);
+
+        return project;
+	}
+
+	public Project acceptResearchInProject(Project project, Research research) throws Exception {
+		UserResearchRequest userResearchRequest = this.userResearchRequestService.getResearchsRequestByResearchAndProject(research, project);
+
+        if (userResearchRequest == null) {
+            throw new Exception("userResearchRequest");
+        }
+
+        Event event = new Event();
+        this.eventService.updateUser(event.EVENT_USER, userResearchRequest.getUser(), event.EVENT_ACTION_CREATE_RESEARCH, project, userResearchRequest.getUser().getUsername());
+
+        return this.userResearchRequestService.acceptApplication(userResearchRequest);
+	}
+	
+	public Project refuseResearchInProject(Project project, Research research) throws Exception {
+        UserResearchRequest userResearchRequest = this.userResearchRequestService.getResearchsRequestByResearchAndProject(research, project);
+        if (userResearchRequest == null) {
+            throw new Exception("userResearchRequest");
+        }
+
+        Event event = new Event();
+        this.eventService.updateUser(event.EVENT_USER, userResearchRequest.getUser(), event.EVENT_ACTION_RESEARCH_REQUEST_REFUSE, project, userResearchRequest.getUser().getUsername());
+
+        return this.userResearchRequestService.refuseApplication(userResearchRequest);
     }
 }
