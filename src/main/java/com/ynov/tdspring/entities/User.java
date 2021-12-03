@@ -47,6 +47,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @NotNull
+    @ManyToMany(mappedBy="likes")
+    private List<Comment> likedComments;
+
     // ------------------------ >
 
     public String getUsername() {
