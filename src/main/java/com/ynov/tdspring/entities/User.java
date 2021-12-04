@@ -2,6 +2,8 @@ package com.ynov.tdspring.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.ynov.tdspring.entities.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
@@ -56,19 +58,15 @@ public class User {
     @Column(name="updated_at")
     private Date updateAt;
 
-    // ------------------------ >
+    @ManyToMany(mappedBy="likes")
+    private List<Comment> likedComments;
+
     @OneToMany(mappedBy = "researchs")
     private List<Research> researchs = new ArrayList<Research>();
+  
+    // ------------------------ >
 
-    public List<Research> getResearchs() {
-		return researchs;
-	}
-
-	public void setResearchs(List<Research> orders) {
-		this.researchs = orders;
-	}
-
-	public String getUsername() {
+	  public String getUsername() {
         return username;
     }
 
@@ -115,7 +113,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
+  
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -131,4 +129,20 @@ public class User {
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
+  
+    public List<Comment> getLikedComments() {
+		  return likedComments;
+	  }
+
+	  public void setLikedComments(List<Comment> likedComments) {
+		  this.likedComments = likedComments;
+	  }
+  
+    public List<Research> getResearchs() {
+		  return researchs;
+	  }
+
+	  public void setResearchs(List<Research> orders) {
+		  this.researchs = orders;
+	  }
 }
