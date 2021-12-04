@@ -1,12 +1,12 @@
 package com.ynov.tdspring.repositories;
 
-import java.util.UUID; 
-
-import com.ynov.tdspring.entities.Comment; 
+import com.ynov.tdspring.entities.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository 
-public interface CommentRepository extends JpaRepository<Comment, UUID> {
+import java.util.UUID;
+
+@Repository
+public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
 }
