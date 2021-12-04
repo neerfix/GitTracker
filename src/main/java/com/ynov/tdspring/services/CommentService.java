@@ -1,13 +1,9 @@
 package com.ynov.tdspring.services; 
 
 import com.ynov.tdspring.entities.*;
-import com.ynov.tdspring.services.*;
 import com.ynov.tdspring.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -15,9 +11,6 @@ import java.util.*;
 public class CommentService {
 	@Autowired
 	private CommentRepository commentRepository; 
-
-	@Autowired
-	private UserService userService; 
 
 	@Autowired
     private EventService eventService;
@@ -87,13 +80,5 @@ public class CommentService {
         this.eventService.create(event.EVENT_USER, user, event.EVENT_ACTION_DELETE, comment);
 
         return comment;
-	}
-
-	public User deleteCommentForUser(String username, UUID comment_id) {
-		User user = userService.getUserByUsername(username); 
-
-		if (user != null) {
-			List<Comment> listComments = user.get
-		}
 	}
 }

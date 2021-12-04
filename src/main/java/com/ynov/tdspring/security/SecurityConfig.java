@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/user/updatePassword").permitAll()
-
+                .antMatchers("/add-test-user").permitAll()
                 .antMatchers("/api", "/swagger-ui/**", "/api/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().httpBasic()

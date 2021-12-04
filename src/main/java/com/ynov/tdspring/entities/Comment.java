@@ -33,7 +33,7 @@ public class Comment {
 	@NotNull
 	@ManyToMany
 	@JoinTable(name="likes", joinColumns= @JoinColumn(name="username"), inverseJoinColumns= @JoinColumn(name="id"))
-	private List<User> likes
+	private List<User> likes;
 
 	public Comment () {}
 
