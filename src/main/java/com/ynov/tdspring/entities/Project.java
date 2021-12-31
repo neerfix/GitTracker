@@ -22,18 +22,36 @@ public class Project {
     @NotBlank
     @Column(name="name")
     private String name;
-
+    
     @NotNull
-    @ManyToOne
-    @JoinColumn(name="author", nullable=false)
-    private User author;
-
+	@ManyToOne
+    @Column(name="project_manager")
+    private User projectManager;
+    
     @NotNull
     @NotBlank
-    @Column(name="description")
-    private String description;
+    @Column(name="git_url")
+    private String gitUrl;
+    
 
+	@NotNull
+    @NotBlank
+    @Column(name="content")
+    private String content;
+    
     @NotNull
+    @NotBlank
+    @Column(name="status")
+    private String status;
+    
+    @NotNull
+    @NotBlank
+    @Column(name="short_description")
+    private String shortDescription;
+
+   
+
+	@NotNull
     @NotBlank
     @FutureOrPresent
     @Column(name="created_at")
@@ -46,54 +64,12 @@ public class Project {
     private Date updateAt;
 
     @NotNull
-    @NotBlank
-    @FutureOrPresent
-    @Column(name="closed_at")
-    private Date closedAt;
-
-    @NotNull
-    @ManyToMany
-    @Min(value = 1)
-    @Max(value = 16)
-    @JoinTable(name = "users_projects",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "project"))
-    private List<User> participants;
-
-    @NotNull
-    @NotBlank
-    @Min(value = 1)
-    @Column(name="nb_patients")
-    private int nbPatients = 1;
-
-    @NotNull
-    @NotBlank
-    @Min(value = 1)
-    @Max(value = 16)
-    @Column(name="nb_total_patients")
-    private int nbTotalPatients = 16;
-
-    @NotNull
     @OneToMany
-    @JoinTable(name = "comments",
+    @JoinTable(name = "issue",
             joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "comments"))
-    private List<Comment> comments;
-
-    @Column(name="keywords")
-    private String[] keywords;
-
-    @OneToMany
-    @JoinTable(name = "researchs",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "researchs"))
-    private List<Research> researchs;
-
-    @OneToMany
-    @JoinTable(name = "followers",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "followers"))
-    private List<User> followers;
+            inverseJoinColumns = @JoinColumn(name = "issue"))
+    
+    private List<Issue> issue;
 
     public UUID getId() {
         return id;
@@ -111,23 +87,32 @@ public class Project {
         this.name = name;
     }
 
-    public User getAuthor() {
-        return author;
-    }
 
-    public void setAuthor(User author) {
-        this.author = author;
-    }
+    public String getGit_url() {
+		return gitUrl;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setGit_url(String git_url) {
+		this.gitUrl = git_url;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public String getShort_description() {
+		return shortDescription;
+	}
 
-    public Date getCreatedAt() {
+	public void setShort_description(String short_description) {
+		this.shortDescription = short_description;
+	}
+
+	public List<Issue> getIssues() {
+		return issue;
+	}
+
+	public void setIssues(List<Issue> issue) {
+		this.issue = issue;
+	}
+
+	public Date getCreatedAt() {
         return createdAt;
     }
 
@@ -143,67 +128,45 @@ public class Project {
         this.updateAt = updateAt;
     }
 
-    public Date getClosedAt() {
-        return closedAt;
-    }
+    public String getStatus() {
+		return status;
+	}
 
-    public void setClosedAt(Date closedAt) {
-        this.closedAt = closedAt;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    public List<User> getParticipants() {
-        return participants;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public void setParticipants(List<User> participants) {
-        this.participants = participants;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public int getNbPatients() {
-        return nbPatients;
-    }
+	public User getProjectManager() {
+		return projectManager;
+	}
 
-    public void setNbPatients(int nbPatients) {
-        this.nbPatients = nbPatients;
-    }
+	public void setProjectManager(User projectManager) {
+		this.projectManager = projectManager;
+	}
 
-    public int getNbTotalPatients() {
-        return nbTotalPatients;
-    }
+	public String getGitUrl() {
+		return gitUrl;
+	}
 
-    public void setNbTotalPatients(int nbTotalPatients) {
-        this.nbTotalPatients = nbTotalPatients;
-    }
+	public void setGitUrl(String gitUrl) {
+		this.gitUrl = gitUrl;
+	}
 
-    public List<Comment> getComments() {
-        return comments;
-    }
+	public String getShortDescription() {
+		return shortDescription;
+	}
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public String[] getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(String[] keywords) {
-        this.keywords = keywords;
-    }
-
-    public List<Research> getResearchs() {
-        return researchs;
-    }
-
-    public void setResearchs(List<Research> researchs) {
-        this.researchs = researchs;
-    }
-
-    public List<User> getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(List<User> followers) {
-        this.followers = followers;
-    }
+	public void setShortDescription(String shortDescription) {
+		this.shortDescription = shortDescription;
+	}
+   
+	
 }

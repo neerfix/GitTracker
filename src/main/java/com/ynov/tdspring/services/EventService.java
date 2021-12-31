@@ -1,6 +1,7 @@
 package com.ynov.tdspring.services;
 
 import com.ynov.tdspring.entities.Event;
+import com.ynov.tdspring.entities.Project;
 import com.ynov.tdspring.entities.User;
 import com.ynov.tdspring.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,4 +41,5 @@ public class EventService
 
         this.eventRepository.save(event);
     }
+    
 }

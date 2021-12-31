@@ -1,13 +1,13 @@
 package com.ynov.tdspring.repositories;
 
-import com.ynov.tdspring.entities.Research;
+import com.ynov.tdspring.entities.Issue;
+
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
 @Repository
-public interface ResearchRepository extends JpaRepository<Research, UUID> {
+public interface IssueRepository extends JpaRepository<Issue, UUID> {
 
 }

@@ -1,9 +1,9 @@
 package com.ynov.tdspring.services;
 
 import com.ynov.tdspring.entities.Event;
-import com.ynov.tdspring.entities.Research;
+import com.ynov.tdspring.entities.Issue;
 import com.ynov.tdspring.entities.User;
-import com.ynov.tdspring.repositories.ResearchRepository;
+import com.ynov.tdspring.repositories.IssueRepository;
 import com.ynov.tdspring.repositories.UserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService
     private UserRepository userRepository;
 
     @Autowired
-    private ResearchRepository researchRepository;
+    private IssueRepository issueRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -44,10 +44,6 @@ public class UserService implements UserDetailsService
         if (StringUtils.isNotEmpty(user.getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-
-        Event event = new Event();
-        this.eventService.create(event.EVENT_RESEARCH, user, event.EVENT_ACTION_CREATE, user);
-
         return userRepository.save(user);
     }
 
@@ -65,10 +61,7 @@ public class UserService implements UserDetailsService
                     HttpStatus.NOT_FOUND, "User not found"
             );
         }
-
-        Event event = new Event();
-        this.eventService.create(event.EVENT_RESEARCH, user, event.EVENT_ACTION_CREATE, user);
-
+        
         userRepository.delete(user);
     }
 
@@ -80,7 +73,8 @@ public class UserService implements UserDetailsService
             List<GrantedAuthority> authorities = new
                     ArrayList<GrantedAuthority>();
             authorities.add(new SimpleGrantedAuthority("ROLE_" +
-                    user.getRole()));
+                    "user"));
+            
             return new
                     org.springframework.security.core.userdetails.User(user.getUsername(),
                     user.getPassword(),
@@ -97,9 +91,6 @@ public class UserService implements UserDetailsService
             if (StringUtils.isEmpty(user.getPassword()) ||
                     StringUtils.equals(user.getPassword(), encodedOldPassword)) {
                 user.setPassword(encodedNewPassword);
-                Event event = new Event();
-                this.eventService.create(event.EVENT_RESEARCH, user, event.EVENT_ACTION_UPDATE, user);
-
                 userRepository.save(user);
             } else {
                 throw new IllegalAccessException("Invalid old password");
@@ -107,20 +98,20 @@ public class UserService implements UserDetailsService
         }
     }
 
-	public List<Research> getResearchsByUserId(String id) {
-		return userRepository.findById(id).orElse(null).getResearchs();
+	public List<Issue> getIssuesByUserId(String id) {
+		return userRepository.findById(id).orElse(null).getIssues();
 	}
 
-	public @Valid User addResearchForUser(String id, UUID research) {
+	public @Valid User addIssueForUser(String id, UUID research) {
 		User user = this.getUserByUsername(id);
 
         if (user != null) {
-            List<Research> listResearchs = user.getResearchs();
-            Research researchToAdd = researchRepository.findById(research).orElse(null);
+            List<Issue> listIssues = user.getIssues();
+            Issue issueToAdd = issueRepository.findById(research).orElse(null);
 
-            if (researchToAdd != null) {
-            	listResearchs.add(researchToAdd);
-                user.setResearchs(listResearchs);
+            if (issueToAdd != null) {
+            	listIssues.add(issueToAdd);
+                user.setIssues(listIssues);
             }
 
             userRepository.save(user);

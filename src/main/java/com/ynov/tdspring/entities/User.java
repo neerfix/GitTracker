@@ -8,65 +8,62 @@ import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Type;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 public class User {
 
-    @Id
+	@Id 
+	@Column(name="id")
+	@Type(type="uuid-char")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private UUID id;
+	
     @NotNull
     @NotBlank
     @Column(name = "username", unique = true)
     private String username;
 
+    
     @NotNull
     @NotBlank
-    @Column(name = "firstname")
-    private String firstname;
-
-    @NotNull
-    @NotBlank
-    @Column(name = "lastname")
-    private String lastname;
-
-    @Column(name = "phone")
-    private String phone;
-
-    @NotNull
-    @NotBlank
-    @Column(name = "role")
-    private String role;
-
+    @Column(name = "email", unique = true)
+    private String email;
+   
+    @Column(name = "github_token")
+    private String github_token;
+    
     @NotNull
     @NotBlank
     @JsonIgnore
     @Column(name = "password")
     private String password;
+    
+    
+    @OneToMany(mappedBy = "issues")
+    private List<Issue> issues = new ArrayList<Issue>();
 
-    @NotNull
-    @NotBlank
-    @FutureOrPresent
-    @Column(name="created_at")
-    private Date createdAt;
-
-    @NotNull
-    @NotBlank
-    @FutureOrPresent
-    @Column(name="updated_at")
-    private Date updateAt;
-
-    @ManyToMany(mappedBy="likes")
-    private List<Comment> likedComments;
-
-    @OneToMany(mappedBy = "researchs")
-    private List<Research> researchs = new ArrayList<Research>();
+    @OneToMany(mappedBy = "roles")
+    private List<Role> roles = new ArrayList<Role>();
     
     // ------------------------ >
 
-	  public String getUsername() {
+	  public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public String getUsername() {
         return username;
     }
 
@@ -74,37 +71,7 @@ public class User {
         this.username = username;
     }
 
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
+   
 
     public String getPassword() {
         return password;
@@ -113,36 +80,38 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getGithub_token() {
+		return github_token;
+	}
+
+	public void setGithub_token(String github_token) {
+		this.github_token = github_token;
+	}
+
+	public List<Issue> getIssues() {
+		return issues;
+	}
+
+	public void setIssues(List<Issue> issues) {
+		this.issues = issues;
+	}
   
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-  
-    public List<Comment> getLikedComments() {
-		  return likedComments;
-	  }
-
-	  public void setLikedComments(List<Comment> likedComments) {
-		  this.likedComments = likedComments;
-	  }
-  
-    public List<Research> getResearchs() {
-		  return researchs;
-	  }
-
-	  public void setResearchs(List<Research> orders) {
-		  this.researchs = orders;
-	  }
+    
 }

@@ -31,7 +31,7 @@ public class CommentController {
     // --------------------- //
 
     @RequestMapping(path="/add-test-comment", method = RequestMethod.GET)
-    public void addTestComment(Project project) {
+    public void addTestComment(Issue issue) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User loggedUser = userService.getUserByUsername(authentication.getName());
         
@@ -39,17 +39,16 @@ public class CommentController {
 
         Comment comment = new Comment();
         comment.setAuthor(loggedUser);
-        comment.setProject(project);
-        comment.setMessage("Hello world");
-        comment.setLikes(likes);
+        comment.setIssue(issue);
+        comment.setContent("Hello world");
         commentService.create(comment);
     }
 
-    @Operation(summary = "Récupération des commentaires pour un projet")
+    @Operation(summary = "Récupération des commentaires pour une issue")
     @RequestMapping(path="/", method= RequestMethod.GET)
-    public List<Comment> getCommentsForProject(@RequestParam(value="project") Project project) {
-    	if (project != null) {
-    		return project.getComments();
+    public List<Comment> getCommentsForProject(@RequestParam(value="issue") Issue issue) {
+    	if (issue != null) {
+    		return issue.getComments();
     	}
     	return null;
     }

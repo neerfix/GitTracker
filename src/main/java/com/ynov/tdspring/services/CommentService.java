@@ -49,36 +49,4 @@ public class CommentService {
 		return commentRepository.findById(id).orElse(null);
 	}
 
-	public Comment addLikeToComment(Comment comment, User user) {
-		if (comment != null) {
-			List<User> likes = comment.getLikes();
-
-			if (user != null) {
-				likes.add(user);
-				comment.setLikes(likes);
-			}
-
-			commentRepository.save(comment);
-		}
-
-		return comment;
-	}
-
-	public Comment deleteLikeForComment(Comment comment, User user) {
-		if (comment != null) {
-			List<User> likes = comment.getLikes();
-
-			if (user != null) {
-				likes.remove(user);
-				comment.setLikes(likes);
-			}
-
-			commentRepository.save(comment);
-		}
-
-		Event event = new Event();
-        this.eventService.create(event.EVENT_USER, user, event.EVENT_ACTION_DELETE, comment);
-
-        return comment;
-	}
 }

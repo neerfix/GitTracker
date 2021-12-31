@@ -1,6 +1,6 @@
 package com.ynov.tdspring.controllers;
 
-import com.ynov.tdspring.entities.Research;
+import com.ynov.tdspring.entities.Issue;
 import com.ynov.tdspring.entities.User;
 import com.ynov.tdspring.services.SecurityService;
 import com.ynov.tdspring.services.UserService;
@@ -30,11 +30,8 @@ public class UserController {
     @RequestMapping(path = "/add-test-user", method = RequestMethod.GET)
     public void addTestUser() {
         User user = new User();
+        user.setEmail("neerfix@neerfix.com");
         user.setUsername("neerfix");
-        user.setFirstname("Jean Pierre");
-        user.setLastname("Test");
-        user.setPhone("0610203040");
-        user.setRole("ADMIN");
         user.setPassword("qwertyuiop");
         userService.createOrUpdate(user);
     }
@@ -62,17 +59,17 @@ public class UserController {
         userService.delete(username);
     }
 
-    @Operation(summary = "Recherches de l'auteur ")
-    @RequestMapping(path = "/user/researchs", method = RequestMethod.GET)
-    public List<Research> getResearchByAuthor(@RequestParam(value = "id") String id) {
-        return userService.getResearchsByUserId(id);
+    @Operation(summary = "Issues de l'auteur ")
+    @RequestMapping(path = "/user/issues", method = RequestMethod.GET)
+    public List<Issue> getissuesByAuthor(@RequestParam(value = "id") String id) {
+        return userService.getIssuesByUserId(id);
     }
 
     @Valid
-    @Operation(summary = "Ajouter une recherche à l'utilisateur")
-    @RequestMapping(path = "/user/researchs", method = RequestMethod.PUT)
+    @Operation(summary = "Ajouter une issue à l'utilisateur")
+    @RequestMapping(path = "/user/issues", method = RequestMethod.PUT)
     public User addUserForExit(@RequestParam(value = "id") String id, @RequestParam(value = "research") UUID research) {
-        return userService.addResearchForUser(id, research);
+        return userService.addIssueForUser(id, research);
     }
 
     @Operation(summary = "Mise à jour du mot de passe d'un utilisateur")

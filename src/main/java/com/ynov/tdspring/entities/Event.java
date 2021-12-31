@@ -14,23 +14,17 @@ import java.util.UUID;
 public class Event {
 
 	public String EVENT_USER = "USER";
-    public String EVENT_USER_REQUEST = "USER_REQUEST";
     public String EVENT_PROJECT = "PROJECT";
-    public String EVENT_RESEARCH = "RESEARCH";
-    public String EVENT_RESEARCH_REQUEST = "RESEARCH_REQUEST";
     public String EVENT_COMMENT = "COMMENT";
-    public String EVENT_LIKE = "LIKE";
+    public String EVENT_ISSUE = "ISSUE";
+    public String EVENT_ROLE = "ROLE";
 
     public String EVENT_ACTION_CREATE = "create";
-    public String EVENT_ACTION_CREATE_RESEARCH = "create research";
+    public String EVENT_ACTION_CREATE_ISSUE = "create issue";
     public String EVENT_ACTION_UPDATE = "update";
     public String EVENT_ACTION_DELETE = "delete";
     public String EVENT_ACTION_ACCEPT = "accepted";
-    public String EVENT_ACTION_REQUEST_JOIN = "request to join";
-    public String EVENT_ACTION_RESEARCH_REQUEST_ADD = "request to add research";
-    public String EVENT_ACTION_RESEARCH_DELETE = "deleting research";
     public String EVENT_ACTION_REFUSE = "refused";
-    public String EVENT_ACTION_RESEARCH_REQUEST_REFUSE = "request refused";
 
     @Id
     @Column(name="id")

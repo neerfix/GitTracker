@@ -22,26 +22,33 @@ public class Comment {
 
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="project", nullable=false)
-	private Project project; 
+	@JoinColumn(name="issue", nullable=false)
+	private Issue issue; 
 
 	@NotNull
 	@NotBlank
-	@Column(name="message")
-	private String message; 
+	@Column(name="content")
+	private String content; 
 
 	@NotNull
-	@ManyToMany
-	@JoinTable(name="likes", joinColumns= @JoinColumn(name="username"), inverseJoinColumns= @JoinColumn(name="id"))
-	private List<User> likes;
+    @NotBlank
+    @FutureOrPresent
+    @Column(name="created_at")
+    private Date createdAt;
+
+    @NotNull
+    @NotBlank
+    @FutureOrPresent
+    @Column(name="updated_at")
+    private Date updateAt;
+
 
 	public Comment () {}
 
-	public Comment (User author, Project project, String message, List<User> likes) {
+	public Comment (User author, Issue issue, String message, List<User> likes) {
 		this.setAuthor(author);
-		this.setProject(project);
-		this.setMessage(message);
-		this.setLikes(likes);
+		this.setIssue(issue);
+		this.setContent(message);
 	}
 
 	public UUID getId() {
@@ -60,27 +67,38 @@ public class Comment {
 		this.author = author; 
 	}
 
-	public Project getProject() {
-		return project; 
+
+	public Issue getIssue() {
+		return issue;
 	}
 
-	public void setProject(Project project) {
-		this.project = project; 
+	public void setIssue(Issue issue2) {
+		this.issue = issue2;
 	}
 
-	public String getMessage() {
-		return message; 
+	public String getContent() {
+		return content; 
 	}
 
-	public void setMessage(String message) {
-		this.message = message; 
+	public void setContent(String message) {
+		this.content = message; 
 	}
 
-	public List<User> getLikes() {
-		return likes; 
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setLikes(List<User> likes) {
-		this.likes = likes; 
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
+
+	public Date getUpdateAt() {
+		return updateAt;
+	}
+
+	public void setUpdateAt(Date updateAt) {
+		this.updateAt = updateAt;
+	}
+	
+	
 }
