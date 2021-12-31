@@ -118,4 +118,24 @@ public class ProjectController {
     public void deleteProject(@RequestParam(value = "id") UUID id) {
     	projectService.delete(id);
     }
+    
+    @Operation(summary = "Ajout du role utilisateur à un projet")
+    @RequestMapping(path = "/project/roles", method = RequestMethod.PUT)
+    public Object updateProject(@Valid @RequestParam(value = "id") UUID id, @RequestParam(value = "username") String username, @RequestParam(value = "role_string") String role_string) throws Exception {
+        Authentication loggedUser = this.securityService.getLoggedUser();
+        User user = userService.getUserByUsername(loggedUser.getName());
+        User userToAdd = userService.getUserByUsername(username);
+        Project project = projectService.getProjectByProjectId(id);
+        Role roletoAdd = new Role();
+        roletoAdd.setProject(project);
+        roletoAdd.setUser(userToAdd);
+        roleService.createOrUpdate(roletoAdd);
+        Role role = roleService.getRoleByProjectAndUsername(project,user.getUsername());
+        
+        if (role.getRole() != "admin"){
+            throw new Exception("Vous n'êtes pas admin de ce projet");
+        }
+        
+        return projectService.update(project);
+    }
 }

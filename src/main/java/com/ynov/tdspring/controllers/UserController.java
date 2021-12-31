@@ -65,6 +65,8 @@ public class UserController {
         return userService.getIssuesByUserId(id);
     }
 
+    
+    
     @Valid
     @Operation(summary = "Ajouter une issue à l'utilisateur")
     @RequestMapping(path = "/user/issues", method = RequestMethod.PUT)
