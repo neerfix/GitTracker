@@ -20,24 +20,24 @@ import java.util.UUID;
 @Table(name = "users")
 public class User {
 
-	@Id 
-	@Column(name="id")
-	@Type(type="uuid-char")
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private UUID id;
-	
+	@Id
     @NotNull
     @NotBlank
     @Column(name = "username", unique = true)
     private String username;
 
+    @NotNull
+    @NotBlank
+    @Column(name = "role", unique = true)
+    private String role;
     
     @NotNull
     @NotBlank
     @Column(name = "email", unique = true)
     private String email;
    
-    @Column(name = "github_token")
+
+	@Column(name = "github_token")
     private String github_token;
     
     @NotNull
@@ -81,13 +81,7 @@ public class User {
         this.password = password;
     }
 
-	public UUID getId() {
-		return id;
-	}
 
-	public void setId(UUID id) {
-		this.id = id;
-	}
 
 	public String getEmail() {
 		return email;
@@ -113,5 +107,13 @@ public class User {
 		this.issues = issues;
 	}
   
+
+    public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
     
 }

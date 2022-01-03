@@ -33,6 +33,7 @@ public class UserController {
         user.setEmail("neerfix@neerfix.com");
         user.setUsername("neerfix");
         user.setPassword("qwertyuiop");
+        user.setRole("ADMIN");
         userService.createOrUpdate(user);
     }
 

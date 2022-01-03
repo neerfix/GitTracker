@@ -52,8 +52,8 @@ public class IssueService {
             );
         }
 
-        Event event = new Event();
-        this.eventService.create(event.EVENT_ISSUE, deleteIssue.getAuthor(), event.EVENT_ACTION_DELETE, deleteIssue.getAuthor().getId());
+//        Event event = new Event();
+//        this.eventService.create(event.EVENT_ISSUE, deleteIssue.getAuthor(), event.EVENT_ACTION_DELETE, deleteIssue.getAuthor().getId());
 
         issueRepository.deleteById(deleteIssue.getId());
     }
