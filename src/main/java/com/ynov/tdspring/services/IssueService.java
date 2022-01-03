@@ -25,7 +25,7 @@ public class IssueService {
 
     public Issue createOrUpdate(Issue issue) {
         Event event = new Event();
-        this.eventService.create(event.EVENT_ISSUE, issue.getAuthor(), event.EVENT_ACTION_CREATE, issue.getId());
+        this.eventService.create(event.EVENT_ISSUE, issue.getAuthor(), event.EVENT_ACTION_CREATE, issue);
 
         return issueRepository.save(issue);
     }
@@ -52,8 +52,8 @@ public class IssueService {
             );
         }
 
-//        Event event = new Event();
-//        this.eventService.create(event.EVENT_ISSUE, deleteIssue.getAuthor(), event.EVENT_ACTION_DELETE, deleteIssue.getAuthor().getId());
+        Event event = new Event();
+        this.eventService.create(event.EVENT_ISSUE, deleteIssue.getAuthor(), event.EVENT_ACTION_DELETE, deleteIssue);
 
         issueRepository.deleteById(deleteIssue.getId());
     }

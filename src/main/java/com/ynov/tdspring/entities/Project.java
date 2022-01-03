@@ -51,19 +51,15 @@ public class Project {
 
    
 
-	@NotNull
-    @NotBlank
     @FutureOrPresent
     @Column(name="created_at")
     private Date createdAt;
 
-    @NotNull
-    @NotBlank
+	
     @FutureOrPresent
     @Column(name="updated_at")
     private Date updateAt;
 
-    @NotNull
     @OneToMany
     @JoinTable(name = "issue",
             joinColumns = @JoinColumn(name = "issue_id"),

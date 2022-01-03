@@ -1,5 +1,6 @@
 package com.ynov.tdspring.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,18 +32,32 @@ public class RoleService {
 
     public Role createOrUpdate(Role role) {
         Event event = new Event();
-        this.eventService.create(event.EVENT_ROLE, role.getUser(), event.EVENT_ACTION_CREATE, role.getId());
+        this.eventService.create(event.EVENT_ROLE, role.getUser(), event.EVENT_ACTION_CREATE, role);
 
         return roleRepository.save(role);
     }
 
     public List<Role> getRoleByUsername(String username) {
     	User user = userService.getUserByUsername(username);
-        return roleRepository.findAllByUser(user);
+    	List<Role> roles = roleRepository.findAll();
+    	List<Role> rolesFound = new ArrayList<Role>();
+    	for(int i=0; i<roles.size();i++) {
+    		if(roles.get(i).getUser().getUsername()==username) {
+    			rolesFound.add(roles.get(i));
+    		}
+    	}
+        return rolesFound;
     }
     
     public List<Role> getRolesByProject(Project project) {
-        return roleRepository.findAllByProject(project);
+    	List<Role> roles = roleRepository.findAll();
+    	List<Role> rolesFound = new ArrayList<Role>();
+    	for(int i=0; i<roles.size();i++) {
+    		if(roles.get(i).getProject()==project) {
+    			rolesFound.add(roles.get(i));
+    		}
+    	}
+        return rolesFound;
     }
     
     public Role getRoleByProjectAndUsername(Project project,String username) {
@@ -66,6 +81,6 @@ public class RoleService {
                     HttpStatus.NOT_FOUND, "Exit not found"
             );
         }
-        roleRepository.delete(deleteRole);
+        roleRepos itory.delete(deleteRole);
     }
 }

@@ -19,24 +19,24 @@ public class CommentService {
 
 	public Comment create(Comment comment) {
 		Event event = new Event();
-//		this.eventService.create(
-//			event.EVENT_PROJECT, 
-//			comment.getAuthor(),
-//			event.EVENT_ACTION_CREATE,
-//			comment.getAuthor().getId()
-//		);
+		this.eventService.create(
+			event.EVENT_PROJECT, 
+			comment.getAuthor(),
+			event.EVENT_ACTION_CREATE,
+			comment
+		);
 
 		return commentRepository.save(comment);
 	}
 
 	public Comment update(Comment comment) throws Exception {
-//		Event event = new Event();
-//		this.eventService.create(
-//			event.EVENT_PROJECT, 
-//			comment.getAuthor(),
-//			event.EVENT_ACTION_UPDATE,
-//			comment.getAuthor().getId()
-//		);
+		Event event = new Event();
+		this.eventService.create(
+			event.EVENT_PROJECT, 
+			comment.getAuthor(),
+			event.EVENT_ACTION_UPDATE,
+			comment
+		);
 		
 		return commentRepository.save(comment); 
 	}

@@ -47,7 +47,7 @@ public class ProjectController {
     @RequestMapping(path = "/add-test-project", method = RequestMethod.GET)
     public void addTestProject() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User loggedUser = userService.getUserByUsername(authentication.getName());
+        User loggedUser = userService.getUserByUsername("neerfix");
 
         Project project = new Project();
         project.setName("First project");

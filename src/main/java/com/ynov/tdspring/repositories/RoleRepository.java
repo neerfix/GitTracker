@@ -13,8 +13,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, UUID> {
 
-	List<Role>  findAllByUser(User user);
-
-	List<Role> findAllByProject(Project project);
 
 }
