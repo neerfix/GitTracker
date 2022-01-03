@@ -25,8 +25,8 @@ public class Project {
     
     @NotNull
 	@ManyToOne
-    @Column(name="project_manager")
-    private User projectManager;
+    @JoinColumn(name="pm_id")
+    private User project_manager;
     
     @NotNull
     @NotBlank
@@ -66,7 +66,7 @@ public class Project {
     @NotNull
     @OneToMany
     @JoinTable(name = "issue",
-            joinColumns = @JoinColumn(name = "id"),
+            joinColumns = @JoinColumn(name = "issue_id"),
             inverseJoinColumns = @JoinColumn(name = "issue"))
     
     private List<Issue> issue;
@@ -145,11 +145,11 @@ public class Project {
 	}
 
 	public User getProjectManager() {
-		return projectManager;
+		return project_manager;
 	}
 
 	public void setProjectManager(User projectManager) {
-		this.projectManager = projectManager;
+		this.project_manager = projectManager;
 	}
 
 	public String getGitUrl() {

@@ -58,7 +58,7 @@ public class Event {
     @NotNull
     @NotBlank
     @JoinColumn(name="entity_id")
-    private Object entityId;
+    private UUID entityId;
 
     @NotNull
     @NotBlank
@@ -111,7 +111,7 @@ public class Event {
         return entityId;
     }
 
-    public void setEntityId(Object entityId) {
+    public void setEntityId(UUID entityId) {
         this.entityId = entityId;
     }
 

@@ -23,7 +23,7 @@ public class CommentService {
 			event.EVENT_PROJECT, 
 			comment.getAuthor(),
 			event.EVENT_ACTION_CREATE,
-			comment
+			comment.getAuthor().getId()
 		);
 
 		return commentRepository.save(comment);
@@ -35,7 +35,7 @@ public class CommentService {
 			event.EVENT_PROJECT, 
 			comment.getAuthor(),
 			event.EVENT_ACTION_UPDATE,
-			comment
+			comment.getAuthor().getId()
 		);
 		
 		return commentRepository.save(comment); 

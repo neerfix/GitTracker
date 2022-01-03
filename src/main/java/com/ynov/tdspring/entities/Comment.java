@@ -5,9 +5,10 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.*;
+import com.ynov.tdspring.entities.Issue;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "comment")
 public class Comment {
 	@Id 
 	@Column(name="id")
@@ -17,12 +18,12 @@ public class Comment {
 
 	@NotNull
 	@ManyToOne 
-	@JoinColumn(name="author", nullable=false)
+	@JoinColumn(name="author_id", nullable=false)
 	private User author; 
 
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="issue", nullable=false)
+	@JoinColumn(name="issue_id", nullable=false)
 	private Issue issue; 
 
 	@NotNull

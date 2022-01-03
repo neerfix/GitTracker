@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import com.ynov.tdspring.entities.Comment;
 import com.ynov.tdspring.entities.Event;
@@ -16,6 +17,7 @@ import com.ynov.tdspring.repositories.RoleRepository;
 
 import org.springframework.web.server.ResponseStatusException;
 
+@Service
 public class RoleService {
 
 	@Autowired
@@ -29,7 +31,7 @@ public class RoleService {
 
     public Role createOrUpdate(Role role) {
         Event event = new Event();
-        this.eventService.create(event.EVENT_ROLE, role.getUser(), event.EVENT_ACTION_CREATE, role);
+        this.eventService.create(event.EVENT_ROLE, role.getUser(), event.EVENT_ACTION_CREATE, role.getId());
 
         return roleRepository.save(role);
     }

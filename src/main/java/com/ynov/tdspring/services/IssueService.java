@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import com.ynov.tdspring.entities.Comment;
 import com.ynov.tdspring.entities.Event;
@@ -13,6 +14,7 @@ import com.ynov.tdspring.entities.User;
 import com.ynov.tdspring.repositories.IssueRepository;
 import org.springframework.web.server.ResponseStatusException;
 
+@Service
 public class IssueService {
 
 	@Autowired
@@ -23,7 +25,7 @@ public class IssueService {
 
     public Issue createOrUpdate(Issue issue) {
         Event event = new Event();
-        this.eventService.create(event.EVENT_ISSUE, issue.getAuthor(), event.EVENT_ACTION_CREATE, issue);
+        this.eventService.create(event.EVENT_ISSUE, issue.getAuthor(), event.EVENT_ACTION_CREATE, issue.getId());
 
         return issueRepository.save(issue);
     }
@@ -51,7 +53,7 @@ public class IssueService {
         }
 
         Event event = new Event();
-        this.eventService.create(event.EVENT_ISSUE, deleteIssue.getAuthor(), event.EVENT_ACTION_DELETE, deleteIssue);
+        this.eventService.create(event.EVENT_ISSUE, deleteIssue.getAuthor(), event.EVENT_ACTION_DELETE, deleteIssue.getAuthor().getId());
 
         issueRepository.deleteById(deleteIssue.getId());
     }

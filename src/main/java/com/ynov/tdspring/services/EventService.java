@@ -16,7 +16,7 @@ public class EventService
     @Autowired
     private EventRepository eventRepository;
 
-    public void create(String type, User author, String action, Object entity) {
+    public void create(String type, User author, String action, UUID entity) {
 
         Event event = new Event();
         event.setCreatedAt(new Date());
@@ -29,7 +29,7 @@ public class EventService
         this.eventRepository.save(event);
     }
 
-    public void updateUser(String type, User author, String action, Object entity, String entityToAdd) {
+    public void updateUser(String type, User author, String action, UUID entity, String entityToAdd) {
 
         Event event = new Event();
         event.setCreatedAt(new Date());

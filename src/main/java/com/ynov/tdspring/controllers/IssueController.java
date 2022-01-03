@@ -29,7 +29,7 @@ public class IssueController {
     // --------------------- >
 
     @RequestMapping(path = "/add-test-issue", method = RequestMethod.GET)
-    public void addTestUser() {
+    public void addTestIssue() {
         Issue research = new Issue();
         User author = userService.getUserByUsername("neerfix");
         research.setTitle("Bar");
@@ -41,32 +41,32 @@ public class IssueController {
 
     @Operation(summary = "Récupération d'une issue")
     @RequestMapping(path = "/issue", method = RequestMethod.GET)
-    public Issue getResearch(@RequestParam(value = "id") UUID id) {
+    public Issue getIssue(@RequestParam(value = "id") UUID id) {
         return issueService.getIssueByIssueId(id);
     }
 
     @Valid
     @Operation(summary = "Création ou mise à jour d'une issue")
     @RequestMapping(path = "/issue", method = RequestMethod.PUT)
-    public Issue addOrUpdateResearch(@RequestBody Issue issue) {
+    public Issue addOrUpdateIssue(@RequestBody Issue issue) {
         return issueService.createOrUpdate(issue);
     }
 
     @Operation(summary = "Auteur de l'issue")
     @RequestMapping(path = "/research/author", method = RequestMethod.GET)
-    public User getAuthorByResearch(@RequestParam(value = "id") UUID id) {
+    public User getAuthorByIssue(@RequestParam(value = "id") UUID id) {
         return issueService.getIssueByIssueId(id).getAuthor();
     }
 
     @Operation(summary = "Récupération de toutes les issues")
-    @RequestMapping(path = "/issue", method = RequestMethod.GET)
-    public List<Issue> getResearch() {
+    @RequestMapping(path = "/issues", method = RequestMethod.GET)
+    public List<Issue> getIssues() {
         return (List<Issue>) issueService.getAllIssues();
     }
 
     @Operation(summary = "Suppression d'une issue à partir de son id")
     @RequestMapping(path = "/issue", method = RequestMethod.DELETE)
-    public void deleteResearch(@RequestParam(value = "id") UUID id) {
+    public void deleteIssue(@RequestParam(value = "id") UUID id) {
     	issueService.delete(id);
     }
 }

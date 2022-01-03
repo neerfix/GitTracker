@@ -26,14 +26,14 @@ public class ProjectService
 
     public Project create(Project project) {
         Event event = new Event();
-        this.eventService.create(event.EVENT_PROJECT,project.getProjectManager(), event.EVENT_ACTION_CREATE, project);
+        this.eventService.create(event.EVENT_PROJECT,project.getProjectManager(), event.EVENT_ACTION_CREATE, project.getId());
 
         return projectRepository.save(project);
     }
 
     public Project update(Project project) {
         Event event = new Event();
-        this.eventService.create(event.EVENT_PROJECT,project.getProjectManager(), event.EVENT_ACTION_UPDATE, project);
+        this.eventService.create(event.EVENT_PROJECT,project.getProjectManager(), event.EVENT_ACTION_UPDATE, project.getId());
 
         return projectRepository.save(project);
     }
@@ -89,7 +89,7 @@ public class ProjectService
         }
 
         Event event = new Event();
-        this.eventService.create(event.EVENT_USER, user, event.EVENT_ACTION_CREATE_ISSUE, project);
+        this.eventService.create(event.EVENT_USER, user, event.EVENT_ACTION_CREATE_ISSUE, project.getId());
 
         return project;
 	}

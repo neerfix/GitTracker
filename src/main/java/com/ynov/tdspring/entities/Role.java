@@ -12,16 +12,21 @@ import java.util.UUID;
 @Table(name = "role")
 public class Role {
 	
+	@Id 
+	@Column(name="id")
+	@Type(type="uuid-char")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private UUID id;
 
-	@Id
+	
 	@NotNull
 	@ManyToOne 
-	@JoinColumn(name="user", nullable=false)
+	@JoinColumn(name="user_id", nullable=false)
 	private User user; 
 	
 	@NotNull
 	@ManyToOne 
-	@JoinColumn(name="project", nullable=false)
+	@JoinColumn(name="project_id", nullable=false)
 	private Project project; 
 	
 	@NotNull
@@ -51,7 +56,16 @@ public class Role {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	} 
+	
 	
 	
 }
