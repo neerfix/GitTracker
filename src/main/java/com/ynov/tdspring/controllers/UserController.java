@@ -28,13 +28,14 @@ public class UserController {
     // --------------------- >
 
     @RequestMapping(path = "/add-test-user", method = RequestMethod.GET)
-    public void addTestUser() {
+    public User addTestUser() {
         User user = new User();
         user.setEmail("neerfix@neerfix.com");
         user.setUsername("neerfix");
         user.setPassword("qwertyuiop");
         user.setRole("ADMIN");
         userService.createOrUpdate(user);
+        return user;
     }
 
     @RequestMapping(path = "/user", method = RequestMethod.GET)
