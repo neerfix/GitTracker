@@ -1,6 +1,7 @@
 package com.ynov.tdspring.security;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,12 +41,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+    	CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        corsConfiguration.setAllowedOrigins(List.of("*"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setExposedHeaders(List.of("Authorization"));
         http.authorizeRequests()
                 .antMatchers("/user/updatePassword").permitAll()
                 .antMatchers("/add-test-user").permitAll()
                 .antMatchers("/api", "/swagger-ui/**", "/api/**").permitAll()
                 .and().httpBasic()
-                .and().csrf().disable();
+                .and().csrf().disable().cors().configurationSource(request -> corsConfiguration);
     }
     
     @Bean
