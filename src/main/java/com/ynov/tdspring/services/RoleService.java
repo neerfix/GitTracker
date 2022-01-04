@@ -81,6 +81,6 @@ public class RoleService {
                     HttpStatus.NOT_FOUND, "Exit not found"
             );
         }
-        roleRepos itory.delete(deleteRole);
+        roleRepository.delete(deleteRole);
     }
 }
