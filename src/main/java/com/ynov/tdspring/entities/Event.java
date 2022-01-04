@@ -58,7 +58,7 @@ public class Event {
     @NotNull
     @NotBlank
     @JoinColumn(name="entity_id")
-    private Object entityId;
+    private String entityId;
 
     @NotNull
     @NotBlank
@@ -107,11 +107,11 @@ public class Event {
         this.author = author;
     }
 
-    public Object getEntityId() {
+    public String getEntityId() {
         return entityId;
     }
 
-    public void setEntityId(Object entity2) {
+    public void setEntityId(String entity2) {
         this.entityId = entity2;
     }
 

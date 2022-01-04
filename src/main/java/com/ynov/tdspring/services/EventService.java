@@ -24,7 +24,7 @@ public class EventService
         event.setTitle("New " + type +  action + " by : " + author.getUsername() + " at " + event.getCreatedAt() + " on this entity : " + entity);
         event.setAuthor(author);
         event.setEntity(entity.getClass().getName());
-        event.setEntityId(entity);
+        event.setEntityId(entity.toString());
 
         this.eventRepository.save(event);
     }
@@ -37,7 +37,7 @@ public class EventService
         event.setTitle("New " + type + "("+entityToAdd+")" +  action + " by : " + author + " at " + event.getCreatedAt() + " on this entity : " + entity);
         event.setAuthor(author);
         event.setEntity(entity.getClass().getName());
-        event.setEntityId(entity);
+        event.setEntityId(entity.toString());
 
         this.eventRepository.save(event);
     }
